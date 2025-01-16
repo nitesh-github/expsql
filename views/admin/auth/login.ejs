@@ -1,0 +1,62 @@
+<%- include('header') %>
+
+<div class="container">
+  <div class="sign-in__wrapper">
+    <div class="sign-in__backdrop"></div>
+    <form class="shadow p-4 bg-white rounded">
+      <div class="h4 mb-2 text-center">Sign In</div>
+      <div></div>
+      <div class="mb-2">
+        <label class="form-label" for="username">Username or Email</label
+        ><input
+          placeholder="Username"
+          required=""
+          type="text"
+          id="username"
+          class="form-control"
+          value=""
+        />
+      </div>
+      <div class="mb-2">
+        <label class="form-label" for="password">Password</label
+        ><input
+          placeholder="Password"
+          required=""
+          type="password"
+          id="password"
+          class="form-control"
+          value=""
+        />
+      </div>
+      <div class="mb-2">
+        <div class="form-check">
+          <input type="checkbox" id="checkbox" class="form-check-input" /><label
+            title=""
+            for="checkbox"
+            class="form-check-label"
+            >Remember me</label
+          >
+        </div>
+      </div>
+      <button type="button" class="w-100 btn btn-primary">Log In</button>
+      <div class="d-grid justify-content-start">
+        <a class="text-muted px-0" href="/login" data-discover="true"
+          >Forgot password?</a
+        >
+      </div>
+      <div class="d-block justify-content-center">
+        Don't have an account?
+        <a class="text-muted px-0" href="/register" data-discover="true"
+          >Sign up</a
+        >
+      </div>
+    </form>
+    <div
+      class="w-100 mb-2 position-absolute bottom-0 start-50 translate-middle-x text-white text-center"
+    >
+      ©2025 Developer | All rights reserved.
+    </div>
+  </div>
+</div>
+
+<%- include('footer') %>
