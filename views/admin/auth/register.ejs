@@ -3,16 +3,36 @@
 <div class="">
   <div class="sign-in__wrapper">
     <div class="sign-in__backdrop"></div>
-    <form class="shadow p-4 bg-white rounded" method="POST" action="/login">
-      <div class="h4 mb-2 text-center">Sign In</div>
-      <div></div>
+    <form class="shadow p-4 bg-white rounded" method="POST" action="/admin/register">
+      <div class="h4 mb-2 text-center">Sign Up</div>
+
+      <% if (message) { %>
+        <div class="alert alert-<%= type %>" role="alert">
+          <%= message %>
+        </div>
+      <% } %>
+      
+      
       <div class="mb-2">
-        <label class="form-label" for="username">Username or Email</label
+        <label class="form-label" for="name">Name</label
         ><input
-          placeholder="Username"
+          placeholder="Name"
           required=""
           type="text"
-          id="username"
+          id="name"
+          name="name"
+          class="form-control"
+          value=""
+        />
+      </div>
+      <div class="mb-2">
+        <label class="form-label" for="username">Email</label
+        ><input
+          placeholder="Email"
+          required=""
+          type="text"
+          id="email"
+          name="email"
           class="form-control"
           value=""
         />
@@ -24,30 +44,22 @@
           required=""
           type="password"
           id="password"
+          name="password"
           class="form-control"
           value=""
         />
       </div>
-      <div class="mb-2">
-        <div class="form-check">
-          <input type="checkbox" id="checkbox" class="form-check-input" /><label
-            title=""
-            for="checkbox"
-            class="form-check-label"
-            >Remember me</label
-          >
-        </div>
-      </div>
-      <button type="button" class="w-100 btn btn-primary">Log In</button>
+     
+      <button type="submit" class="w-100 btn btn-primary">Sign Up</button>
       <div class="d-grid justify-content-start">
         <a class="text-muted px-0" href="/forget-password" data-discover="true"
           >Forgot password?</a
         >
       </div>
       <div class="d-block justify-content-center">
-        Don't have an account?
-        <a class="text-muted px-0" href="/admin/register" data-discover="true"
-          >Sign up</a
+        Already have an account?
+        <a class="text-muted px-0" href="/admin/login" data-discover="true"
+          >Sign in</a
         >
       </div>
     </form>
