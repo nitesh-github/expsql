@@ -4,6 +4,15 @@ const PORT = process.env.PORT;
 const routes = require('./routes');
 
 const app = express();
+const cors = require('cors');
+
+const corsOptions = {
+    origin: 'http://localhost:4000',  // Front-end URL to allow requests from
+    methods: 'GET, POST, PUT, DELETE',
+    allowedHeaders: 'Content-Type, Authorization',
+};
+
+app.use(cors(corsOptions));
 //app.use(express.json());
 app.set('view engine', 'ejs');
 app.set('views', './views');
