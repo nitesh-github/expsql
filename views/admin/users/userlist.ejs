@@ -37,10 +37,13 @@
                       <%= user?.email %>
                     </td>
                     <td>
-                      <%= formatDate(user?.createdAt) %>
+                      <%= helper.formatDate(user?.createdAt) %>
                     </td>
                     <td>
-                      <%= user && user.profile_image ? `<img src="${user.profile_image}" alt="Profile Image" width="50" height="50">` : "" %>
+                      <% if(user && user?.profile_image){ %>
+                        <img src="<%= `${helper.baseUrl()}/uploads/${user.profile_image}` %>"
+                        alt="Profile Image" width="50" height="50">
+                    <% } %>
                     </td>                    
                     <td><a href="user/edit/<%= user?.id %>" class="btn btn-sm btn-primary">Edit</a></td>
                   </tr>

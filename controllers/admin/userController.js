@@ -1,6 +1,8 @@
 const bcrypt = require("bcrypt");
 const jsonwebtoken = require("jsonwebtoken");
 const { User } = require("../../models");
+const fs = require("fs");
+const path = require("path");
 
 const register = async (req, res) => {
   const data = {
@@ -75,10 +77,10 @@ const loginPost = async (req, res) => {
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      data = {...data, message:"Invalid password"};
+      data = { ...data, message: "Invalid password" };
       return res.render("admin/auth/login", data);
     }
-    req.session.user = { id: user.id, name: user.name, email:user.email};
+    req.session.user = { id: user.id, name: user.name, email: user.email };
     res.redirect("/admin");
   } catch (err) {
     let data = {
@@ -112,7 +114,7 @@ const logout = (req, res) => {
     type: "success",
   };
   req.session.destroy(() => {
-    res.render("admin/auth/login",data);
+    res.render("admin/auth/login", data);
   });
 };
 
@@ -122,9 +124,9 @@ const userlist = async (req, res) => {
     title: "Users list page",
     message: "",
     type: "",
-    userlist : userlist,
-  }; 
- res.render("admin/users/userlist",data);
+    userlist: userlist,
+  };
+  res.render("admin/users/userlist", data);
 };
 
 const edit = async (req, res) => {
@@ -136,20 +138,43 @@ const edit = async (req, res) => {
     title: "User edit page",
     message: "",
     type: "",
-    user : user,
-  }; 
- res.render("admin/users/useredit",data);
+    user: user,
+  };
+  res.render("admin/users/useredit", data);
 };
 
 const update = async (req, res) => {
-  const userlist = await User.findAll();
-  const data = {
-    title: "Users list page",
-    message: "",
-    type: "",
-    userlist : userlist,
-  }; 
- res.render("admin/users/userlist",data);
+
+  try {
+    let { name, email, old_profile_image } = req.body;
+    let id = req.params.id;
+    let updateData = { name: name, email: email };
+    if (req.file) {
+      const imageName = req.file?.filename;
+      updateData.profile_image = imageName;
+      const imageUrl = `/uploads/${imageName}`;
+
+      const oldImagePath = path.join(process.cwd(), 'public/uploads/', old_profile_image);
+      console.log(oldImagePath);
+      if (fs.existsSync(oldImagePath)) {
+        fs.unlink(oldImagePath, (err) => {
+          if (err) {
+            console.error('Error deleting old file:', err);
+          } else {
+            console.log('Old file deleted successfully');
+          }
+        });
+      }
+    }
+    const result = await User.update(
+      updateData,
+      { where: { id: id } }
+    )
+    return res.redirect(`${process.env.BASE_URL}/admin/user/edit/${id}`);
+  } catch (err) {
+    console.log(err);
+
+  }
 };
 
 module.exports = {

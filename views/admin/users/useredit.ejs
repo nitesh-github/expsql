@@ -12,7 +12,7 @@
             <div class="card">
                 <h5 class="card-header">Update User</h5>
                 <div class="card-body">
-                    <form class="shadow p-4 bg-white rounded" method="POST" action="/admin/register">
+                    <form class="shadow p-4 bg-white rounded" method="POST" action="<%= helper.baseUrl() %>/admin/user/update/<%= user?.id %>" enctype="multipart/form-data">
 
                         <% if (message) { %>
                             <div class="alert alert-<%= type %>" role="alert">
@@ -36,17 +36,23 @@
                                         <div class="mb-2">
                                             <label for="formFile" class="form-label">Default file input example</label>
                                             <input class="form-control" type="file" name="profile_image"
-                                                id="profile_image">
+                                                id="profile_image" accept="image/*">
+
+                                                <input class="form-control" type="hidden" name="old_profile_image"
+                                                id="old_profile_image" value="<%= user && user?.profile_image ? user?.profile_image:"" %>">
                                         </div>
 
                                         <div class="mb-2">
-                                            <%= user && user.profile_image ? `<img src="${user.profile_image}"
-                                                alt="Profile Image" width="50" height="50">` : "" %>
+                                            <% if(user && user?.profile_image){ %>
+                                                <img src="<%= `${helper.baseUrl()}/uploads/${user.profile_image}` %>"
+                                                alt="Profile Image" width="50" height="50">
+                                            <% } %>
+
                                         </div>
                                     </div>
                                 </div>
 
-                                <button type="submit" class="w-100 btn btn-primary">Sign Up</button>
+                                <button type="submit" class="w-100 btn btn-primary">Update</button>
 
                     </form>
 

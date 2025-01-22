@@ -9,12 +9,20 @@ const app = express();
 const cors = require('cors');
 
 const corsOptions = {
-    origin: 'http://localhost:4000',  // Front-end URL to allow requests from
-    methods: 'GET, POST, PUT, DELETE',
-    allowedHeaders: 'Content-Type, Authorization',
+  origin: (origin, callback) => {
+      const allowedOrigins = ['http://localhost:4000', 'http://localhost:5000'];
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+          callback(null, true);
+      } else {
+          callback(new Error('Not allowed by CORS'));
+      }
+  },
+  methods: 'GET, POST, PUT, DELETE',
+  allowedHeaders: 'Content-Type, Authorization',
 };
 
 app.use(cors(corsOptions));
+
 app.use(session({
   secret: process.env.JWT_SECRET,  // Change to a strong secret
   resave: false,
@@ -23,7 +31,7 @@ app.use(session({
 }));
 app.use((req, res, next) => {
   res.locals.session = req.session;  // Make session available globally in all views
-  res.locals.formatDate  = helper.formatDate;
+  res.locals.helper  = helper
   next();
 });
 app.use(express.urlencoded({ extended: true }));
