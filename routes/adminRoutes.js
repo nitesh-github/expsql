@@ -6,6 +6,18 @@ router.get('/login', userController.login);
 router.post('/login', userController.loginPost);
 router.get('/register', userController.register);
 router.post('/register', userController.registerPost);
+
+const isAuthenticated = (req, res, next) => {
+    if (!req.session.user) {
+      return res.redirect('/admin/login');
+    }
+    next();
+  };
+
+router.use("/",isAuthenticated);
 // Logout
+router.get("/user", userController.userlist);
+router.get("/user/edit/:id", userController.edit);
+router.post("/user/update/:id", userController.update);
 router.get("/logout", userController.logout);
 module.exports= router;

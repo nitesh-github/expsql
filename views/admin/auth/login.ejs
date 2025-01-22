@@ -3,16 +3,21 @@
 <div class="">
   <div class="sign-in__wrapper">
     <div class="sign-in__backdrop"></div>
-    <form class="shadow p-4 bg-white rounded" method="POST" action="/login">
+    <form class="shadow p-4 bg-white rounded" method="POST" action="/admin/login">
       <div class="h4 mb-2 text-center">Sign In</div>
-      <div></div>
+      <% if (message) { %>
+        <div class="alert alert-<%= type %>" role="alert">
+          <%= message %>
+        </div>
+      <% } %>
       <div class="mb-2">
         <label class="form-label" for="username">Username or Email</label
         ><input
           placeholder="Username"
           required=""
           type="text"
-          id="username"
+          id="email"
+          name="email"
           class="form-control"
           value=""
         />
@@ -24,21 +29,22 @@
           required=""
           type="password"
           id="password"
+          name="password"
           class="form-control"
           value=""
         />
       </div>
-      <div class="mb-2">
+      <!-- <div class="mb-2">
         <div class="form-check">
-          <input type="checkbox" id="checkbox" class="form-check-input" /><label
+          <input type="checkbox" id="checkbox" name="checkbox" class="form-check-input" /><label
             title=""
             for="checkbox"
             class="form-check-label"
             >Remember me</label
           >
         </div>
-      </div>
-      <button type="button" class="w-100 btn btn-primary">Log In</button>
+      </div> -->
+      <button type="submit" class="w-100 btn btn-primary">Log In</button>
       <div class="d-grid justify-content-start">
         <a class="text-muted px-0" href="/forget-password" data-discover="true"
           >Forgot password?</a

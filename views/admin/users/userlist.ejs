@@ -1,0 +1,59 @@
+<%- include('../header') %>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Users List</li>
+    </ol>
+  </nav>
+  <!-- <h1 class="h2">User List</h1> -->
+
+  <div class="row">
+    <div class="col-12 col-xl-12 mb-4 mb-lg-0">
+      <div class="card">
+        <h5 class="card-header">Users List</h5>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Id</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Registration Date</th>
+                  <th scope="col">Image</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% userlist?.map((user)=>{ %>
+                  <tr>
+                    <th scope="row">
+                      <%= user?.id %>
+                    </th>
+                    <td>
+                      <%= user?.name %>
+                    </td>
+                    <td>
+                      <%= user?.email %>
+                    </td>
+                    <td>
+                      <%= formatDate(user?.createdAt) %>
+                    </td>
+                    <td>
+                      <%= user && user.profile_image ? `<img src="${user.profile_image}" alt="Profile Image" width="50" height="50">` : "" %>
+                    </td>                    
+                    <td><a href="user/edit/<%= user?.id %>" class="btn btn-sm btn-primary">Edit</a></td>
+                  </tr>
+                  <% }) %>
+
+
+              </tbody>
+            </table>
+          </div>
+          <a href="#" class="btn btn-block btn-light">View all</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('../footer') %>

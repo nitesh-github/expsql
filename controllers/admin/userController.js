@@ -12,26 +12,26 @@ const register = async (req, res) => {
 };
 
 const registerPost = async (req, res) => {
-    
+
   const { name, email, password } = req.body;
   try {
     const existingUser = await User.findOne({
-        where: { email: email }, 
-      });
-    if (existingUser){
-        let data = {
-            title: "Admin register page",
-            message: "User already exists",
-            type: "danger",
-          };
-          return res.render("admin/auth/register", data);
+      where: { email: email },
+    });
+    if (existingUser) {
+      let data = {
+        title: "Admin register page",
+        message: "User already exists",
+        type: "danger",
+      };
+      return res.render("admin/auth/register", data);
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({ name, email, password: hashedPassword });
     await user.save();
     let data = {
-        title: "Admin register page",
+      title: "Admin register page",
       message: "User registered successfully.",
       type: "success",
     };
@@ -39,7 +39,7 @@ const registerPost = async (req, res) => {
   } catch (error) {
     console.log(error);
     let data = {
-        title: "Admin register page",
+      title: "Admin register page",
       message: "Error registering user. Try again.",
       type: "danger",
     };
@@ -50,6 +50,8 @@ const registerPost = async (req, res) => {
 const login = async (req, res) => {
   const data = {
     title: "Admin login page",
+    message: "",
+    type: "",
   };
   res.render("admin/auth/login", data);
 };
@@ -57,23 +59,34 @@ const login = async (req, res) => {
 const loginPost = async (req, res) => {
   const { email, password } = req.body;
 
+  let data = {
+    title: "Admin login page",
+    message: "",
+    type: "",
+  };
+
   try {
     const user = await User.findOne({ where: { email } });
 
     if (!user) {
-      return res.render("login", { error: "Invalid email or password" });
+      return res.render("admin/auth/login", data);
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      return res.render("login", { error: "Invalid email or password" });
+      data = {...data, message:"Invalid password"};
+      return res.render("admin/auth/login", data);
     }
-
-    req.session.user = { id: user.id, username: user.username };
+    req.session.user = { id: user.id, name: user.name, email:user.email};
     res.redirect("/admin");
   } catch (err) {
-    res.status(500).send("An error occurred");
+    let data = {
+      title: "Admin login page",
+      message: "Something went wrong. Try again.",
+      type: "danger",
+    };
+    res.render("admin/auth/login", data);
   }
 };
 
@@ -84,20 +97,59 @@ const dashboard = async (req, res) => {
     }
     const data = {
       title: "Dashboard",
-      user: req.session?.user,
+      message: "",
     };
-    console.log("test3");
     res.render("admin/home", data);
   } catch (err) {
-    console.log("test4", err);
     res.status(500).send("An error occurred");
   }
 };
 
 const logout = (req, res) => {
+  const data = {
+    title: "Admin login page",
+    message: "Logout successfully",
+    type: "success",
+  };
   req.session.destroy(() => {
-    res.redirect("/admin/login");
+    res.render("admin/auth/login",data);
   });
+};
+
+const userlist = async (req, res) => {
+  const userlist = await User.findAll();
+  const data = {
+    title: "Users list page",
+    message: "",
+    type: "",
+    userlist : userlist,
+  }; 
+ res.render("admin/users/userlist",data);
+};
+
+const edit = async (req, res) => {
+  let id = req.params.id;
+  const user = await User.findOne({
+    where: { id: id },
+  });
+  const data = {
+    title: "User edit page",
+    message: "",
+    type: "",
+    user : user,
+  }; 
+ res.render("admin/users/useredit",data);
+};
+
+const update = async (req, res) => {
+  const userlist = await User.findAll();
+  const data = {
+    title: "Users list page",
+    message: "",
+    type: "",
+    userlist : userlist,
+  }; 
+ res.render("admin/users/userlist",data);
 };
 
 module.exports = {
@@ -107,4 +159,7 @@ module.exports = {
   loginPost,
   dashboard,
   logout,
+  userlist,
+  edit,
+  update,
 };

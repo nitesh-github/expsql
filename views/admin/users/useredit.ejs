@@ -1,0 +1,58 @@
+<%- include('../header') %>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Users List</li>
+        </ol>
+    </nav>
+    <!-- <h1 class="h2">User List</h1> -->
+
+    <div class="row">
+        <div class="col-12 col-xl-12 mb-4 mb-lg-0">
+            <div class="card">
+                <h5 class="card-header">Update User</h5>
+                <div class="card-body">
+                    <form class="shadow p-4 bg-white rounded" method="POST" action="/admin/register">
+
+                        <% if (message) { %>
+                            <div class="alert alert-<%= type %>" role="alert">
+                                <%= message %>
+                            </div>
+                            <% } %>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="mb-2">
+                                            <label class="form-label" for="name">Name</label><input placeholder="Name"
+                                                required="" type="text" id="name" name="name" class="form-control"
+                                                value="<%= user && user?.name ? user?.name:"" %>" />
+                                        </div>
+                                        <div class="mb-2">
+                                            <label class="form-label" for="username">Email</label><input
+                                                placeholder="Email" required="" type="text" id="email" name="email"
+                                                class="form-control" value="<%= user && user?.email ? user?.email:"" %>" />
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mb-2">
+                                            <label for="formFile" class="form-label">Default file input example</label>
+                                            <input class="form-control" type="file" name="profile_image"
+                                                id="profile_image">
+                                        </div>
+
+                                        <div class="mb-2">
+                                            <%= user && user.profile_image ? `<img src="${user.profile_image}"
+                                                alt="Profile Image" width="50" height="50">` : "" %>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="w-100 btn btn-primary">Sign Up</button>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('../footer') %>
