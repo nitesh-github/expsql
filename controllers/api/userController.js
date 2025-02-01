@@ -1,12 +1,13 @@
-const User = require("../../models/user");
+const { User } = require("../../models");
 const bcrypt = require('bcrypt');
-const jsonwebtoken = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
+
 
 const register = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({where : { email }});
     if (existingUser) return res.status(400).json({ status: false, message: 'User already exists' });
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -27,7 +28,6 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    console.log(email);
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ status: false,message: 'Invalid credentials' });
 
@@ -37,7 +37,7 @@ const login = async (req, res) => {
     }    
 
     const token = jwt.sign({ userId: user?._id }, process.env.JWT_SECRET, {
-      expiresIn: '1h',
+      expiresIn: '24h',
     });
     let userinfo = {
       _id:user?._id,
@@ -58,8 +58,18 @@ const getUser = async (req, res) => {
   }
 };
 
+const getUserList = async (req, res) => {
+  try {
+    const users = await User.findAll();
+    return res.status(200).json({ status: true, data: users });
+  } catch (error) {
+    return res.status(500).json({ status: false, message: 'Error fetching user profile' });
+  }
+};
+
 module.exports = {
     register,
     login,
     getUser,
+    getUserList
   };

@@ -155,7 +155,7 @@ const update = async (req, res) => {
       const imageUrl = `/uploads/${imageName}`;
 
       const oldImagePath = path.join(process.cwd(), 'public/uploads/', old_profile_image);
-      console.log(oldImagePath);
+      
       if (fs.existsSync(oldImagePath)) {
         fs.unlink(oldImagePath, (err) => {
           if (err) {

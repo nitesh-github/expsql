@@ -10,7 +10,7 @@ const cors = require('cors');
 
 const corsOptions = {
   origin: (origin, callback) => {
-      const allowedOrigins = ['http://localhost:4000', 'http://localhost:5000'];
+      const allowedOrigins = ['http://localhost:4000', 'http://localhost:3000'];
       if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
           callback(null, true);
       } else {
