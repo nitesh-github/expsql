@@ -7,5 +7,11 @@ module.exports = {
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
     dialect: process.env.DB_DIALECT,
+    pool: {
+    max: 20,  // Increase the maximum number of connections
+    min: 5,
+    acquire: 30000,  // Time in ms to wait for a connection before throwing an error
+    idle: 10000,  // Time in ms to wait before closing an unused connection
+  },
   },
 };
